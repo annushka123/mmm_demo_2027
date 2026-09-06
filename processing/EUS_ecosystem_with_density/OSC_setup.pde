@@ -87,24 +87,10 @@ if (
       targetBees = int(pow(mappedValue, 2));
 
 
-      volumeMemory.add(volume);
-      if (volumeMemory.size() > maxMemorySize) {
-        volumeMemory.remove(0);
-      }
-
-
-      gestureMemory.add(gestures);
-      if (gestureMemory.size() > maxMemorySize) {
-        gestureMemory.remove(0);
-      }
-
-      densityMemory.add(density);
-
-      bowPosMemory.add(pitch);
-
-      if (densityMemory.size() > maxMemorySize) densityMemory.remove(0);
-
-      if (bowPosMemory.size() > maxMemorySize) bowPosMemory.remove(0);
+      remember(volumeMemory, volume);
+      remember(gestureMemory, gestures);
+      remember(densityMemory, density);
+      remember(bowPosMemory, pitch);  // Performer pitch is intentional here.
 
 
 

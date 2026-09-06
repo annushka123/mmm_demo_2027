@@ -270,11 +270,31 @@ void drawMode2() {
 
 
 float average(ArrayList<Float> data) {
-  float sum = 0;
-  for (float v : data) {
-    sum += v;
+  if (data == null) return 0;
+
+  // OSC writes on a different thread. Hold the same lock as remember()
+  // so the list cannot change while the animation thread averages it.
+  synchronized (data) {
+    float sum = 0;
+    int count = 0;
+    for (Float value : data) {
+      if (value != null) {
+        sum += value;
+        count++;
+      }
+    }
+    if (count == 0) return 0;
+    return sum / count;
   }
-  return (data.size() > 0) ? sum / data.size() : 0;
+}
+
+void remember(ArrayList<Float> data, float value) {
+  synchronized (data) {
+    data.add(value);
+    while (data.size() > maxMemorySize) {
+      data.remove(0);
+    }
+  }
 }
 
 void drawMode3() {
